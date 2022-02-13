@@ -1,3 +1,3 @@
 default:
-	cp while.py while
-	chmod +x while
+	cp while.py while-ss
+	chmod +x while-ss

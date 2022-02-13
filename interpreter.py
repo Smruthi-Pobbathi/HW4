@@ -13,6 +13,7 @@ class VarNotDefinedError(Error):
         raise Exception (f"{name} not defined")
 class Interpreter():
     store = {}
+    # repr_result = ""
     # Traverses through the AST produced from parser and calculates the result of the input expression
     def __init__(self, ast):
         self.ast = ast
@@ -32,7 +33,10 @@ class Interpreter():
             result += str(value[0])
             result += ", "
         if len(self.store) > 0:
+            # and len(self.store) != 1:
             result = result[:-2]
+        # elif len(self.store) == 1:
+        #     result = result
         result += "}"
         return result        
 
@@ -43,6 +47,16 @@ class Interpreter():
     
     def no_visit_func(self, node):
         raise Exception(f'No visit_{type(node).__name__} func defined')
+
+    def show(self, node):
+    #  prt):
+        func_name = f'show_{type(node).__name__}'
+        func = getattr(self, func_name, self.no_show_func)
+        return func(node)
+    
+    def no_show_func(self, node):
+    #  prt):
+        raise Exception(f'No show_{type(node).__name__} func defined')
     
     def visit_Binary_op_node(self, node):
         if node.op.type == TT_PLUS:
@@ -69,6 +83,51 @@ class Interpreter():
         elif node.op.type == TT_SEMI:
             return self.execute_statements(node)
         
+        # self.repr_result + "⇒ skip, " + self.store_repr()
+        # print("⇒ skip, ", self.store_repr())
+
+    def show_Binary_op_node(self, node):
+        # self.repr_result + "⇒ skip, " + self.store_repr()
+        # print("⇒ skip, " + self.store_repr())
+        if node.op.type == TT_PLUS:
+            return str("(" + self.show(node.left_node) + "+" + self.show(node.right_node) + ")")
+            # print("(" + self.show(node.left_node) + "+" + self.show(node.right_node) + ")")
+            # return ""
+        elif node.op.type == TT_MINUS:
+            return str("(" + self.show(node.left_node) + "-" + self.show(node.right_node) + ")")
+            # print("(" + self.show(node.left_node) + "-" + self.show(node.right_node) + ")")
+            # return ""
+        elif node.op.type == TT_MUL:
+            return str("(" + self.show(node.left_node) + "*" + self.show(node.right_node) + ")")
+            # print("(" + self.show(node.left_node) + "*" + self.show(node.right_node) + ")")
+            # return ""
+        elif node.op.type == TT_DIVIDE:
+            return str("(" + self.show(node.left_node) + "/" + self.show(node.right_node) + ")")
+            # print("(" + self.show(node.left_node) + "/" + self.show(node.right_node) + ")")
+            # return ""
+        elif node.op.type == TT_EQ:
+            return str("(" + self.show(node.left_node) + "=" + self.show(node.right_node) + ")")
+            # print("(" + self.show(node.left_node) + "=" + self.show(node.right_node) + ")")
+            # return ""
+        elif node.op.type == TT_LT: 
+            return str("(" + self.show(node.left_node) + "<" + self.show(node.right_node) + ")")
+            # print("(" + self.show(node.left_node) + "<" + self.show(node.right_node) + ")")
+            # return 
+        elif node.op.type == TT_GT:
+            return str("(" + self.show(node.left_node) + ">" + self.show(node.right_node) + ")")
+            # print("(" + self.show(node.left_node) + ">" + self.show(node.right_node) + ")")
+            # return
+        elif node.op.type == TT_AND:
+            return str("(" + self.show(node.left_node) + "∧" + self.show(node.right_node) + ")")
+            # print ("(" + self.show(node.left_node) + "∧" + self.show(node.right_node) + ")")
+            # return ""
+        elif node.op.type == TT_OR:
+            return str("(" + self.show(node.left_node) + "∨" + self.show(node.right_node) + ")")
+            # print("(" + self.show(node.left_node) + "∨" + self.show(node.right_node) + ")")
+            # return ""
+        elif node.op.type == TT_SEMI:
+            return self.execute_statements(node)
+    
     def visit_Unary_op_node(self, node):
         op = node.op.type
         if op == TT_PLUS:
@@ -77,15 +136,51 @@ class Interpreter():
             return -self.visit(node.node)
         elif node.op.type == TT_NOT:
             return not(self.visit(node.node))
+    
+    def show_Unary_op_node(self, node):
+        # , prt):
+        op = node.op.type
+        # if prt:
+        if op == TT_PLUS:
+            # self.repr_result + "+" + self.show(node.node)
+            return ("+" + self.show(node.node))
+        elif op == TT_MINUS:
+            # self.repr_result + "-" + self.show(node.node)
+            return ("-" + self.show(node.node))
+        elif op == TT_NOT:
+            # self.repr_result + "¬" + self.show(node.node)
+            return ("¬" + self.show(node.node))
         
     def visit_Num_node(self, node):
         return node.value
+    
+    def show_Num_node(self, node):
+    # , prt):
+        # self.repr_result + node.value
+        # if prt:
+        # print(node.value)
+        return str(node.value)
     
     def visit_Assign_node(self, node):
         name = node.name.value
         value = self.visit(node.value)
         self.store[name] = (value, VAL_INITIALIZED)
+        self.show_store()
+        # self.prt_assign(node)
 
+    def prt_assign(self, node):
+        print(node.name.value + " := " + str(self.show(node.value)) + ", " + self.store_repr())
+
+
+    def show_Assign_node(self, node):
+    # , prt):
+        name = node.name.value
+        value = self.show(node.value)
+        # if prt:
+        # return str(name + " := " + str(value))
+        return str("⇒ " + name + " := " + str(value) + ", " + self.store_repr())
+        # print( "⇒ " + name + " := " + str(value) + ", " + self.store_repr())
+        
     def visit_Variable_node(self, node):
         id = node.value
         value = self.store.get(id)
@@ -93,46 +188,94 @@ class Interpreter():
             self.store[id] = (0, VAL_NOT_INITIALIZED)
             value = self.store.get(id)
         return value[0]
+    
+    def show_Variable_node(self, node):
+    # , prt):
+        # self.repr_result + self.show(node.value)
+        # if prt:
+        # print(node.value)
+        return str(node.value)
         
     def visit_Skip_node(self, node):
         pass
 
+    def show_Skip_node(self, node):
+    # , prt):
+        print("")
+
     def visit_If_node(self, node):
         if self.visit(node.condition):
+            print(self.show(node.true_case))
             self.visit(node.true_case)
+            # self.show_store()
+            
         else:
+            print(self.show(node.false_case))
             self.visit(node.false_case)
-    
-    def visit_While_node(self, node):
-        while True:
-            condition = self.visit(node.condition)
+            # self.show_store()
+    def show_If_node(self, node):
+        # , prt):
+        # if prt:
+            # self.repr_result + "⇒ if (" + self.show(node.condition, True) + ") then { " + self.show(node.true_case, True) + "} else { " + self.show(node.false_condition, True) +" } "  + self.store_repr())
+        print("⇒ if " + self.show(node.condition) + " then { " + self.show(node.true_case) + "} else { " + self.show(node.false_case) + " } "  + self.store_repr())
 
-            if not condition:
+    def visit_While_node(self, node):
+        counter = 10000
+        while True:
+            # print(self.show(node.body))
+            # condition = self.visit(node.condition)
+            # print("skip; " + str(self.show_While_node(node)))
+            if not self.visit(node.condition) or counter == 0:
+                self.show_store()
                 break
+            counter -= 1
+            print(self.show(node.body))
+            print("⇒ skip; " + "while " + self.show(node.condition) + " do { "+ self.show(node.body) + " }, " + self.store_repr())
             self.visit(node.body)
         return None
-    
+
+    def show_While_node(self, node):
+        # , prt):
+        # if prt:
+            #  self.repr_result + "while " + self.show(node.body, True)
+            #  self.show(node.condition, True) + " do { " +  self.show(node.body, True) + " }, " + self.store_repr   
+            print("⇒ while " + self.show(node.condition) + " do { "+ self.show(node.body) + " }, " + self.store_repr())
+
     def visit_Bool_node(self, node):
         if node.token.matches(TT_KEYWORD, 'true'):
             return True
         elif node.token.matches(TT_KEYWORD, 'false'):
             return False
     
+    def show_Bool_node(self, node):
+    # , prt):
+        # if prt:
+        if node.token.matches(TT_KEYWORD, 'true'):
+            return ("true")
+        elif node.token.matches(TT_KEYWORD, 'false'):
+            return ("false")
+    
     def execute_statements(self, node):
         if node.left_node != None:
+            print("⇒ skip; ")
             self.visit(node.left_node)
+            self.show(node.right_node)
         if node.right_node != None:
             self.visit(node.right_node)
+            self.show_store()
         return None
 
-    def visit_For_node(self, node):
-        self.visit(node.initialize)
-        while True:
-            terminate = self.visit(node.terminate)
+    def show_store(self):
+        print("⇒ skip,",self.store_repr())
 
-            if terminate:
-                break
-            self.visit(node.body)
-            self.visit(node.step)
+    # def visit_For_node(self, node):
+    #     self.visit(node.initialize)
+    #     while True:
+    #         terminate = self.visit(node.terminate)
 
-        return None
+    #         if terminate:
+    #             break
+    #         self.visit(node.body)
+    #         self.visit(node.step)
+
+    #     return None
