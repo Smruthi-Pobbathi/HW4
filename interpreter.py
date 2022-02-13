@@ -1,5 +1,12 @@
 from tokens import *
 from error import Error
+from enum import Enum, unique
+@unique
+class LoopPos(Enum):
+    NO_LOOP = 0
+    LOOP_BEGIN = 1
+    LOOP_MID = 2
+    LOOP_END = 3
 class DivideByZeroError(Error):
     def __init__(self):
         raise Exception('Divide by Zero')
@@ -13,7 +20,7 @@ class VarNotDefinedError(Error):
         raise Exception (f"{name} not defined")
 class Interpreter():
     store = {}
-    from_loop = False
+    loop_pos = LoopPos.NO_LOOP
     # repr_result = ""
     # Traverses through the AST produced from parser and calculates the result of the input expression
     def __init__(self, ast):
@@ -182,9 +189,11 @@ class Interpreter():
     # , prt):
         name = node.name.value
         value = self.show(node.value)
-        if self.from_loop:
+        if self.loop_pos is LoopPos.LOOP_BEGIN:
+            return str("⇒ " + name + " := " + str(value) + ";")
+        elif self.loop_pos is LoopPos.LOOP_MID:
             return str(name + " := " + str(value))
-        else:
+        elif self.loop_pos is LoopPos.NO_LOOP:
             return str("⇒ " + name + " := " + str(value) + ", " + self.store_repr())
         # if prt:
         # return str(name + " := " + str(value))
@@ -231,9 +240,11 @@ class Interpreter():
 
     def visit_While_node(self, node, from_loop = False):
         counter = 10000
-        self.from_loop = True
+        self.loop_pos = LoopPos.LOOP_BEGIN
         if self.visit(node.condition):
-            print(self.show(node.body) + " while " + self.show(node.condition) + " do { "+ self.show(node.body) + " }, " + self.store_repr())
+            print(self.show(node.body), end="")
+            self.loop_pos = LoopPos.LOOP_MID
+            print(" while " + self.show(node.condition) + " do { "+ self.show(node.body) + " }, " + self.store_repr())
         while self.visit(node.condition) and counter > 0:
             # print(self.show(node.body))
             # condition = self.visit(node.condition)
@@ -243,7 +254,7 @@ class Interpreter():
             print("⇒ skip; " + "while " + self.show(node.condition) + " do { "+ self.show(node.body) + " }, " + self.store_repr())  
             print("⇒ while " + self.show(node.condition) + " do { "+ self.show(node.body) + " }, " + self.store_repr())
         self.show_store()
-        self.from_loop = False
+        self.loop_pos = LoopPos.NO_LOOP
         return None
 
     def show_While_node(self, node):

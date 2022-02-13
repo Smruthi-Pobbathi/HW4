@@ -24,4 +24,4 @@ for expr in fileinput.input():
 # interpreter.interpret()
 # # # interpreter.store_repr
 # # # print(interpreter.store_repr)
-# print(interpreter.repr_result())
+# # print(interpreter.repr_result())
