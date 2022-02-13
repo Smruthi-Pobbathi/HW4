@@ -240,20 +240,25 @@ class Interpreter():
 
     def visit_While_node(self, node, from_loop = False):
         counter = 10000
-        self.loop_pos = LoopPos.LOOP_BEGIN
-        if self.visit(node.condition):
+        while self.visit(node.condition):
+            self.loop_pos = LoopPos.LOOP_BEGIN
             print(self.show(node.body), end="")
             self.loop_pos = LoopPos.LOOP_MID
             print(" while " + self.show(node.condition) + " do { "+ self.show(node.body) + " }, " + self.store_repr())
-        while self.visit(node.condition) and counter > 0:
-            # print(self.show(node.body))
-            # condition = self.visit(node.condition)
-            # print("skip; " + str(self.show_While_node(node)))
             counter -= 1
+            if counter == 0:
+                break
             self.visit(node.body, from_loop = True)
-            print("⇒ skip; " + "while " + self.show(node.condition) + " do { "+ self.show(node.body) + " }, " + self.store_repr())  
+            print("⇒ skip; " + "while " + self.show(node.condition) + " do { "+ self.show(node.body) + " }, " + self.store_repr())
+            counter -= 1
+            if counter == 0:
+                break
             print("⇒ while " + self.show(node.condition) + " do { "+ self.show(node.body) + " }, " + self.store_repr())
-        self.show_store()
+            counter -= 1
+            if counter == 0:
+                break
+        if counter > 0:
+            self.show_store()
         self.loop_pos = LoopPos.NO_LOOP
         return None
 
