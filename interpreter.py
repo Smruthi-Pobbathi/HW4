@@ -1,3 +1,4 @@
+from ast import stmt
 from tokens import *
 from error import Error
 from enum import Enum, unique
@@ -29,6 +30,7 @@ class Interpreter():
     store = {}
     loop_pos = LoopPos.NO_LOOP
     stmt_type = StmtType.STMT_FREE
+    store_prtd = False
    
     # Traverses through the AST produced from parser and calculates the result of the input expression
     def __init__(self, ast):
@@ -151,6 +153,7 @@ class Interpreter():
         elif from_loop:
             return str(node.name.value + " := " + str(self.show(node.value)))
         elif self.stmt_type is StmtType.STMT_FREE:
+            self.store_prtd = True
             self.show_store()
         elif self.stmt_type is StmtType.STMT_IF:
             return str ("⇒ skip, "+ self.store_repr())
@@ -227,7 +230,7 @@ class Interpreter():
             counter -= 1
             if counter == 0:
                 break
-        if counter > 0:
+        if counter > 0 and self.stmt_type != StmtType.STMT_LEFT:
             self.show_store()
         self.loop_pos = LoopPos.NO_LOOP
         return None
@@ -270,7 +273,8 @@ class Interpreter():
             self.stmt_type = StmtType.STMT_SEQ
             self.visit(node.right_node, from_loop = True)
             self.stmt_type = StmtType.STMT_FREE
-            self.show_store()
+            if not self.store_prtd:
+                self.show_store()
         return "test"
 
     def show_store(self):
