@@ -245,6 +245,9 @@ class Parser:
         true_case = self.stmt()
 
         false_case = Skip_node
+        peek = self.peek()
+        if peek is peek is not None and peek.matches(TT_KEYWORD, 'else'):
+            self.next()
         if self.current.matches(TT_KEYWORD, 'else'):
             self.next()
             false_case = self.stmt()
