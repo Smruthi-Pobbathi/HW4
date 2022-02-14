@@ -1,31 +1,24 @@
 cp while.py while-ss
 chmod +x while-ss
-1..46
-ok 1 easy-1
-ok 2 easy-2
-ok 3 easy-3
-ok 4 easy-4
-ok 5 easy-5
-not ok 6 easy-6
-# (from function `check' in file tests/harness.bash, line 6,
-#  in test file tests/easy.bats, line 28)
-#   `check 'x := 1 * 9 ; if 5 < x then x := 2 - 2 else y := 9' '⇒ skip; if (5<x) then { x := (2-2) } else { y := 9 }, {x → 9}' failed
-# x := 1 * 9 ; if 5 < x then x := 2 - 2 else y := 9 = ⇒ skip; if (5<x) then { x := (2-2) } else { y := 9 }, {x → 9}
-# ⇒ if (5<x) then { x := (2-2) } else { y := 9 }, {x → 9}
-# ⇒ x := (2-2), {x → 9}
-# ⇒ skip, {x → 0}, your code outputs ⇒ skip; 
-# ⇒ skip, {x → 9}
-# ⇒ if (5<x) then { ⇒ x := (2-2), {x → 9}} else { ⇒ y := 9, {x → 9} } {x → 9}
-# ⇒ x := (2-2), {x → 9}
-# ⇒ skip, {x → 0}
-# ⇒ skip, {x → 0}
-ok 7 easy-7
-ok 8 easy-8
-ok 9 easy-9
-ok 10 easy-10
-ok 11 easy-12
-ok 12 easy-13
-not ok 13 easy-14
+1..51
+ok 1 custom-1
+ok 2 custom-2
+ok 3 custom-3
+ok 4 custom-4
+ok 5 custom-5
+ok 6 easy-1
+ok 7 easy-2
+ok 8 easy-3
+ok 9 easy-4
+ok 10 easy-5
+ok 11 easy-6
+ok 12 easy-7
+ok 13 easy-8
+ok 14 easy-9
+ok 15 easy-10
+ok 16 easy-12
+ok 17 easy-13
+not ok 18 easy-14
 # (from function `check' in file tests/harness.bash, line 6,
 #  in test file tests/easy.bats, line 67)
 #   `check '{ a := 1 ; b := 2 } ; c := 3' '⇒ skip; b := 2; c := 3, {a → 1}' failed
@@ -33,14 +26,9 @@ not ok 13 easy-14
 # ⇒ b := 2; c := 3, {a → 1}
 # ⇒ skip; c := 3, {a → 1, b → 2}
 # ⇒ c := 3, {a → 1, b → 2}
-# ⇒ skip, {a → 1, b → 2, c → 3}, your code outputs ⇒ skip; 
-# ⇒ skip; 
-# ⇒ skip, {a → 1}
-# ⇒ skip, {a → 1, b → 2}
-# ⇒ skip, {a → 1, b → 2}
+# ⇒ skip, {a → 1, b → 2, c → 3}, your code outputs ⇒ skip; ⇒ skip; ⇒ skip, {a → 1, b → 2}
 # ⇒ skip, {a → 1, b → 2, c → 3}
-# ⇒ skip, {a → 1, b → 2, c → 3}
-not ok 14 easy-15
+not ok 19 easy-15
 # (from function `check' in file tests/harness.bash, line 6,
 #  in test file tests/easy.bats, line 75)
 #   `check 'z := 26 ; { a := 1 ; b := 2 ; c := 3 }' '⇒ skip; a := 1; b := 2; c := 3, {z → 26}' failed
@@ -50,38 +38,26 @@ not ok 14 easy-15
 # ⇒ b := 2; c := 3, {a → 1, z → 26}
 # ⇒ skip; c := 3, {a → 1, b → 2, z → 26}
 # ⇒ c := 3, {a → 1, b → 2, z → 26}
-# ⇒ skip, {a → 1, b → 2, c → 3, z → 26}, your code outputs ⇒ skip; 
-# ⇒ skip, {z → 26}
-# ⇒ skip; 
-# ⇒ skip; 
-# ⇒ skip, {a → 1, z → 26}
-# ⇒ skip, {a → 1, b → 2, z → 26}
-# ⇒ skip, {a → 1, b → 2, z → 26}
+# ⇒ skip, {a → 1, b → 2, c → 3, z → 26}, your code outputs ⇒ skip; ⇒ skip; ⇒ skip; ⇒ skip, {a → 1, b → 2, z → 26}
+# ⇒ skip, {a → 1, b → 2, c → 3, z → 26}
+# ⇒ skip; ⇒ skip; ⇒ skip, {a → 1, b → 2, c → 3, z → 26}
 # ⇒ skip, {a → 1, b → 2, c → 3, z → 26}
 # ⇒ skip, {a → 1, b → 2, c → 3, z → 26}
-# ⇒ skip; 
-# ⇒ skip; 
-# ⇒ skip, {a → 1, b → 2, c → 3, z → 26}
-# ⇒ skip, {a → 1, b → 2, c → 3, z → 26}
-# ⇒ skip, {a → 1, b → 2, c → 3, z → 26}
-# ⇒ skip, {a → 1, b → 2, c → 3, z → 26}
-# ⇒ skip, {a → 1, b → 2, c → 3, z → 26}
-# ⇒ skip, {a → 1, b → 2, c → 3, z → 26}
-ok 15 easy-16
-ok 16 easy-17
-ok 17 hard-1
-ok 18 hard-2
-ok 19 hard-3
-ok 20 hard-4
-ok 21 hard-5
-ok 22 hard-6
-ok 23 hard-7
-ok 24 hard-8
-ok 25 hard-9
-ok 26 hard-10
-ok 27 hard-11
-ok 28 hard-12
-not ok 29 hard-13
+ok 20 easy-16
+ok 21 easy-17
+ok 22 hard-1
+ok 23 hard-2
+ok 24 hard-3
+ok 25 hard-4
+ok 26 hard-5
+ok 27 hard-6
+ok 28 hard-7
+ok 29 hard-8
+ok 30 hard-9
+ok 31 hard-10
+ok 32 hard-11
+ok 33 hard-12
+not ok 34 hard-13
 # (from function `check' in file tests/harness.bash, line 6,
 #  in test file tests/hard.bats, line 64)
 #   `check 'if ( ¬ true ) then skip else x := z * -1' '⇒ x := (z*-1), {}' failed
@@ -89,43 +65,37 @@ not ok 29 hard-13
 # ⇒ skip, {x → 0}, your code outputs Traceback (most recent call last):
 #   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/./while-ss", line 14, in <module>
 #     interpreter.interpret()
-#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 31, in interpret
+#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 38, in interpret
 #     return self.visit(self.ast)
-#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 56, in visit
+#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 63, in visit
 #     return func(node, from_loop)
-#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 232, in visit_If_node
+#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 249, in visit_If_node
 #     print(self.show(node.false_case))
-#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 65, in show
+#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 72, in show
 #     return func(node)
-#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 69, in no_show_func
+#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 76, in no_show_func
 #     raise Exception(f'No show_{type(node).__name__} func defined')
 # Exception: No show_type func defined
-ok 30 hard-14
-not ok 31 hard-15
+ok 35 hard-14
+not ok 36 hard-15
 # (from function `check' in file tests/harness.bash, line 6,
 #  in test file tests/hard.bats, line 73)
 #   `check 'x := 3 * f0 ; z := 2 * x' '⇒ skip; z := (2*x), {x → 0}' failed
 # x := 3 * f0 ; z := 2 * x = ⇒ skip; z := (2*x), {x → 0}
 # ⇒ z := (2*x), {x → 0}
-# ⇒ skip, {x → 0, z → 0}, your code outputs ⇒ skip; 
-# ⇒ skip, {x → 0}
-# ⇒ skip, {x → 0, z → 0}
-# ⇒ skip, {x → 0, z → 0}
-not ok 32 hard-16
+# ⇒ skip, {x → 0, z → 0}, your code outputs ⇒ skip; ⇒ skip, {x → 0, z → 0}
+not ok 37 hard-16
 # (from function `check' in file tests/harness.bash, line 6,
 #  in test file tests/hard.bats, line 79)
 #   `check 'x := C - 0 ; y := g' '⇒ skip; y := g, {x → 0}' failed
 # x := C - 0 ; y := g = ⇒ skip; y := g, {x → 0}
 # ⇒ y := g, {x → 0}
-# ⇒ skip, {x → 0, y → 0}, your code outputs ⇒ skip; 
-# ⇒ skip, {x → 0}
-# ⇒ skip, {x → 0, y → 0}
-# ⇒ skip, {x → 0, y → 0}
-ok 33 hard-17
-ok 34 hard-18
-ok 35 hard-19
-ok 36 hard-20
-not ok 37 medium-1
+# ⇒ skip, {x → 0, y → 0}, your code outputs ⇒ skip; ⇒ skip, {x → 0, y → 0}
+ok 38 hard-17
+ok 39 hard-18
+ok 40 hard-19
+ok 41 hard-20
+not ok 42 medium-1
 # (from function `check' in file tests/harness.bash, line 6,
 #  in test file tests/medium.bats, line 4)
 #   `check 'i := 5 ; fact := 1 ; while 0 < i do { fact := fact * i ; i := i - 1 }' '⇒ skip; fact := 1; while (0<i) do { fact := (fact*i); i := (i-1) }, {i → 5}' failed
@@ -158,32 +128,25 @@ not ok 37 medium-1
 # ⇒ i := (i-1); while (0<i) do { fact := (fact*i); i := (i-1) }, {fact → 120, i → 1}
 # ⇒ skip; while (0<i) do { fact := (fact*i); i := (i-1) }, {fact → 120, i → 0}
 # ⇒ while (0<i) do { fact := (fact*i); i := (i-1) }, {fact → 120, i → 0}
-# ⇒ skip, {fact → 120, i → 0}, your code outputs ⇒ skip; 
-# ⇒ skip; 
-# ⇒ skip, {i → 5}
-# ⇒ skip, {fact → 1, i → 5}
-# ⇒ skip, {fact → 1, i → 5}
-# ⇒ skip; 
-# ⇒ skip, {fact → 5, i → 5}
-# ⇒ skip, {fact → 5, i → 4}
-# ⇒ skip, {fact → 5, i → 4}
+# ⇒ skip, {fact → 120, i → 0}, your code outputs ⇒ skip; ⇒ skip; ⇒ skip, {fact → 1, i → 5}
+# ⇒ skip; ⇒ skip, {fact → 5, i → 4}
 # Traceback (most recent call last):
 #   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/./while-ss", line 14, in <module>
 #     interpreter.interpret()
-#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 31, in interpret
+#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 38, in interpret
 #     return self.visit(self.ast)
-#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 56, in visit
+#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 63, in visit
 #     return func(node, from_loop)
-#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 94, in visit_Binary_op_node
+#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 101, in visit_Binary_op_node
 #     return self.execute_statements(node)
-#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 290, in execute_statements
+#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 312, in execute_statements
 #     self.show(node.right_node)
-#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 65, in show
+#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 72, in show
 #     return func(node)
-#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 270, in show_While_node
+#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 292, in show_While_node
 #     print("⇒ while " + self.show(node.condition) + " do { "+ self.show(node.body) + " }, " + self.store_repr())
 # TypeError: can only concatenate str (not "NoneType") to str
-not ok 38 medium-2
+not ok 43 medium-2
 # (from function `check' in file tests/harness.bash, line 6,
 #  in test file tests/medium.bats, line 37)
 #   `check 'i := 3 ; fact := 1 ; while 0 < i do { fact := fact * i ; i := i - 1 }' '⇒ skip; fact := 1; while (0<i) do { fact := (fact*i); i := (i-1) }, {i → 3}' failed
@@ -206,32 +169,25 @@ not ok 38 medium-2
 # ⇒ i := (i-1); while (0<i) do { fact := (fact*i); i := (i-1) }, {fact → 6, i → 1}
 # ⇒ skip; while (0<i) do { fact := (fact*i); i := (i-1) }, {fact → 6, i → 0}
 # ⇒ while (0<i) do { fact := (fact*i); i := (i-1) }, {fact → 6, i → 0}
-# ⇒ skip, {fact → 6, i → 0}, your code outputs ⇒ skip; 
-# ⇒ skip; 
-# ⇒ skip, {i → 3}
-# ⇒ skip, {fact → 1, i → 3}
-# ⇒ skip, {fact → 1, i → 3}
-# ⇒ skip; 
-# ⇒ skip, {fact → 3, i → 3}
-# ⇒ skip, {fact → 3, i → 2}
-# ⇒ skip, {fact → 3, i → 2}
+# ⇒ skip, {fact → 6, i → 0}, your code outputs ⇒ skip; ⇒ skip; ⇒ skip, {fact → 1, i → 3}
+# ⇒ skip; ⇒ skip, {fact → 3, i → 2}
 # Traceback (most recent call last):
 #   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/./while-ss", line 14, in <module>
 #     interpreter.interpret()
-#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 31, in interpret
+#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 38, in interpret
 #     return self.visit(self.ast)
-#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 56, in visit
+#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 63, in visit
 #     return func(node, from_loop)
-#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 94, in visit_Binary_op_node
+#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 101, in visit_Binary_op_node
 #     return self.execute_statements(node)
-#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 290, in execute_statements
+#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 312, in execute_statements
 #     self.show(node.right_node)
-#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 65, in show
+#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 72, in show
 #     return func(node)
-#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 270, in show_While_node
+#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 292, in show_While_node
 #     print("⇒ while " + self.show(node.condition) + " do { "+ self.show(node.body) + " }, " + self.store_repr())
 # TypeError: can only concatenate str (not "NoneType") to str
-not ok 39 medium-3
+not ok 44 medium-3
 # (from function `check' in file tests/harness.bash, line 6,
 #  in test file tests/medium.bats, line 60)
 #   `check 'i := -1 ; fact := 1 ; while 0 < i do { fact := fact * i ; i := i - 1 }' '⇒ skip; fact := 1; while (0<i) do { fact := (fact*i); i := (i-1) }, {i → -1}' failed
@@ -239,32 +195,25 @@ not ok 39 medium-3
 # ⇒ fact := 1; while (0<i) do { fact := (fact*i); i := (i-1) }, {i → -1}
 # ⇒ skip; while (0<i) do { fact := (fact*i); i := (i-1) }, {fact → 1, i → -1}
 # ⇒ while (0<i) do { fact := (fact*i); i := (i-1) }, {fact → 1, i → -1}
-# ⇒ skip, {fact → 1, i → -1}, your code outputs ⇒ skip; 
-# ⇒ skip; 
-# ⇒ skip, {i → -1}
-# ⇒ skip, {fact → 1, i → -1}
-# ⇒ skip, {fact → 1, i → -1}
-# ⇒ skip; 
-# ⇒ skip, {fact → -1, i → -1}
-# ⇒ skip, {fact → -1, i → -2}
-# ⇒ skip, {fact → -1, i → -2}
+# ⇒ skip, {fact → 1, i → -1}, your code outputs ⇒ skip; ⇒ skip; ⇒ skip, {fact → 1, i → -1}
+# ⇒ skip; ⇒ skip, {fact → -1, i → -2}
 # Traceback (most recent call last):
 #   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/./while-ss", line 14, in <module>
 #     interpreter.interpret()
-#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 31, in interpret
+#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 38, in interpret
 #     return self.visit(self.ast)
-#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 56, in visit
+#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 63, in visit
 #     return func(node, from_loop)
-#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 94, in visit_Binary_op_node
+#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 101, in visit_Binary_op_node
 #     return self.execute_statements(node)
-#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 290, in execute_statements
+#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 312, in execute_statements
 #     self.show(node.right_node)
-#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 65, in show
+#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 72, in show
 #     return func(node)
-#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 270, in show_While_node
+#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 292, in show_While_node
 #     print("⇒ while " + self.show(node.condition) + " do { "+ self.show(node.body) + " }, " + self.store_repr())
 # TypeError: can only concatenate str (not "NoneType") to str
-not ok 40 medium-4
+not ok 45 medium-4
 # (from function `check' in file tests/harness.bash, line 6,
 #  in test file tests/medium.bats, line 68)
 #   `check 'a := 98 ; b := 76 ; while ¬ ( a = b ) do { if a < b then b := b - a else a := a - b }' '⇒ skip; b := 76; while ¬(a=b) do { if (a<b) then { b := (b-a) } else { a := (a-b) } }, {a → 98}' failed
@@ -312,29 +261,25 @@ not ok 40 medium-4
 # ⇒ b := (b-a); while ¬(a=b) do { if (a<b) then { b := (b-a) } else { a := (a-b) } }, {a → 2, b → 4}
 # ⇒ skip; while ¬(a=b) do { if (a<b) then { b := (b-a) } else { a := (a-b) } }, {a → 2, b → 2}
 # ⇒ while ¬(a=b) do { if (a<b) then { b := (b-a) } else { a := (a-b) } }, {a → 2, b → 2}
-# ⇒ skip, {a → 2, b → 2}, your code outputs ⇒ skip; 
-# ⇒ skip; 
-# ⇒ skip, {a → 98}
-# ⇒ skip, {a → 98, b → 76}
-# ⇒ skip, {a → 98, b → 76}
-# ⇒ if (a<b) then { ⇒ b := (b-a), {a → 98, b → 76}} else { ⇒ a := (a-b), {a → 98, b → 76} } {a → 98, b → 76}
+# ⇒ skip, {a → 2, b → 2}, your code outputs ⇒ skip; ⇒ skip; ⇒ skip, {a → 98, b → 76}
+# if (a<b) then { b := (b-a) } else { a := (a-b) }, {a → 98, b → 76}
 # Traceback (most recent call last):
 #   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/./while-ss", line 14, in <module>
 #     interpreter.interpret()
-#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 31, in interpret
+#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 38, in interpret
 #     return self.visit(self.ast)
-#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 56, in visit
+#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 63, in visit
 #     return func(node, from_loop)
-#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 94, in visit_Binary_op_node
+#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 101, in visit_Binary_op_node
 #     return self.execute_statements(node)
-#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 290, in execute_statements
+#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 312, in execute_statements
 #     self.show(node.right_node)
-#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 65, in show
+#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 72, in show
 #     return func(node)
-#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 270, in show_While_node
+#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 292, in show_While_node
 #     print("⇒ while " + self.show(node.condition) + " do { "+ self.show(node.body) + " }, " + self.store_repr())
 # TypeError: can only concatenate str (not "NoneType") to str
-not ok 41 medium-5
+not ok 46 medium-5
 # (from function `check' in file tests/harness.bash, line 6,
 #  in test file tests/medium.bats, line 116)
 #   `check 'a := 369 ; b := 1107 ; while ¬ ( a = b ) do { if a < b then b := b - a else a := a - b }' '⇒ skip; b := 1107; while ¬(a=b) do { if (a<b) then { b := (b-a) } else { a := (a-b) } }, {a → 369}' failed
@@ -350,29 +295,25 @@ not ok 41 medium-5
 # ⇒ b := (b-a); while ¬(a=b) do { if (a<b) then { b := (b-a) } else { a := (a-b) } }, {a → 369, b → 738}
 # ⇒ skip; while ¬(a=b) do { if (a<b) then { b := (b-a) } else { a := (a-b) } }, {a → 369, b → 369}
 # ⇒ while ¬(a=b) do { if (a<b) then { b := (b-a) } else { a := (a-b) } }, {a → 369, b → 369}
-# ⇒ skip, {a → 369, b → 369}, your code outputs ⇒ skip; 
-# ⇒ skip; 
-# ⇒ skip, {a → 369}
-# ⇒ skip, {a → 369, b → 1107}
-# ⇒ skip, {a → 369, b → 1107}
-# ⇒ if (a<b) then { ⇒ b := (b-a), {a → 369, b → 1107}} else { ⇒ a := (a-b), {a → 369, b → 1107} } {a → 369, b → 1107}
+# ⇒ skip, {a → 369, b → 369}, your code outputs ⇒ skip; ⇒ skip; ⇒ skip, {a → 369, b → 1107}
+# if (a<b) then { b := (b-a) } else { a := (a-b) }, {a → 369, b → 1107}
 # Traceback (most recent call last):
 #   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/./while-ss", line 14, in <module>
 #     interpreter.interpret()
-#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 31, in interpret
+#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 38, in interpret
 #     return self.visit(self.ast)
-#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 56, in visit
+#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 63, in visit
 #     return func(node, from_loop)
-#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 94, in visit_Binary_op_node
+#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 101, in visit_Binary_op_node
 #     return self.execute_statements(node)
-#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 290, in execute_statements
+#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 312, in execute_statements
 #     self.show(node.right_node)
-#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 65, in show
+#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 72, in show
 #     return func(node)
-#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 270, in show_While_node
+#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 292, in show_While_node
 #     print("⇒ while " + self.show(node.condition) + " do { "+ self.show(node.body) + " }, " + self.store_repr())
 # TypeError: can only concatenate str (not "NoneType") to str
-not ok 42 medium-6
+not ok 47 medium-6
 # (from function `check' in file tests/harness.bash, line 6,
 #  in test file tests/medium.bats, line 132)
 #   `check 'a := 369 ; b := 1108 ; while ¬ ( a = b ) do { if a < b then b := b - a else a := a - b }' '⇒ skip; b := 1108; while ¬(a=b) do { if (a<b) then { b := (b-a) } else { a := (a-b) } }, {a → 369}' failed
@@ -1864,52 +1805,45 @@ not ok 42 medium-6
 # ⇒ a := (a-b); while ¬(a=b) do { if (a<b) then { b := (b-a) } else { a := (a-b) } }, {a → 2, b → 1}
 # ⇒ skip; while ¬(a=b) do { if (a<b) then { b := (b-a) } else { a := (a-b) } }, {a → 1, b → 1}
 # ⇒ while ¬(a=b) do { if (a<b) then { b := (b-a) } else { a := (a-b) } }, {a → 1, b → 1}
-# ⇒ skip, {a → 1, b → 1}, your code outputs ⇒ skip; 
-# ⇒ skip; 
-# ⇒ skip, {a → 369}
-# ⇒ skip, {a → 369, b → 1108}
-# ⇒ skip, {a → 369, b → 1108}
-# ⇒ if (a<b) then { ⇒ b := (b-a), {a → 369, b → 1108}} else { ⇒ a := (a-b), {a → 369, b → 1108} } {a → 369, b → 1108}
+# ⇒ skip, {a → 1, b → 1}, your code outputs ⇒ skip; ⇒ skip; ⇒ skip, {a → 369, b → 1108}
+# if (a<b) then { b := (b-a) } else { a := (a-b) }, {a → 369, b → 1108}
 # Traceback (most recent call last):
 #   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/./while-ss", line 14, in <module>
 #     interpreter.interpret()
-#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 31, in interpret
+#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 38, in interpret
 #     return self.visit(self.ast)
-#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 56, in visit
+#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 63, in visit
 #     return func(node, from_loop)
-#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 94, in visit_Binary_op_node
+#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 101, in visit_Binary_op_node
 #     return self.execute_statements(node)
-#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 290, in execute_statements
+#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 312, in execute_statements
 #     self.show(node.right_node)
-#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 65, in show
+#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 72, in show
 #     return func(node)
-#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 270, in show_While_node
+#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 292, in show_While_node
 #     print("⇒ while " + self.show(node.condition) + " do { "+ self.show(node.body) + " }, " + self.store_repr())
 # TypeError: can only concatenate str (not "NoneType") to str
-not ok 43 medium-7
+not ok 48 medium-7
 # (from function `check' in file tests/harness.bash, line 6,
 #  in test file tests/medium.bats, line 1624)
 #   `check 'while false do x := 1 ; if true then y := 1 else z := 1' '⇒ skip; if true then { y := 1 } else { z := 1 }, {}' failed
 # while false do x := 1 ; if true then y := 1 else z := 1 = ⇒ skip; if true then { y := 1 } else { z := 1 }, {}
 # ⇒ if true then { y := 1 } else { z := 1 }, {}
 # ⇒ y := 1, {}
-# ⇒ skip, {y → 1}, your code outputs ⇒ skip; 
-# ⇒ skip, {}
-# ⇒ if true then { ⇒ y := 1, {}} else { ⇒ z := 1, {} } {}
+# ⇒ skip, {y → 1}, your code outputs ⇒ skip; ⇒ skip, {}
+# if true then { y := 1 } else { z := 1 }, {}
+# ⇒ if true then { y := 1 } else { z := 1 }, {}
 # ⇒ y := 1, {}
 # ⇒ skip, {y → 1}
-# ⇒ skip, {y → 1}
-not ok 44 medium-8
+not ok 49 medium-8
 # (from function `check' in file tests/harness.bash, line 6,
 #  in test file tests/medium.bats, line 1631)
 #   `check 'while false do x := 1 ; y := 1' '⇒ skip; y := 1, {}' failed
 # while false do x := 1 ; y := 1 = ⇒ skip; y := 1, {}
 # ⇒ y := 1, {}
-# ⇒ skip, {y → 1}, your code outputs ⇒ skip; 
-# ⇒ skip, {}
+# ⇒ skip, {y → 1}, your code outputs ⇒ skip; ⇒ skip, {}
 # ⇒ skip, {y → 1}
-# ⇒ skip, {y → 1}
-not ok 45 medium-9
+not ok 50 medium-9
 # (from function `check' in file tests/harness.bash, line 6,
 #  in test file tests/medium.bats, line 1637)
 #   `check 'if false then kj := 12 else while false do l0 := 0' '⇒ while false do { l0 := 0 }, {}' failed
@@ -1917,7 +1851,7 @@ not ok 45 medium-9
 # ⇒ skip, {}, your code outputs ⇒ while false do { ⇒ l0 := 0, {} }, {}
 # None
 # ⇒ skip, {}
-not ok 46 medium-10
+not ok 51 medium-10
 # (from function `check' in file tests/harness.bash, line 6,
 #  in test file tests/medium.bats, line 1642)
 #   `check 'if false then while true do skip else x := 2' '⇒ x := 2, {}' failed
@@ -1925,14 +1859,14 @@ not ok 46 medium-10
 # ⇒ skip, {x → 2}, your code outputs Traceback (most recent call last):
 #   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/./while-ss", line 14, in <module>
 #     interpreter.interpret()
-#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 31, in interpret
+#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 38, in interpret
 #     return self.visit(self.ast)
-#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 56, in visit
+#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 63, in visit
 #     return func(node, from_loop)
-#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 232, in visit_If_node
+#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 249, in visit_If_node
 #     print(self.show(node.false_case))
-#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 65, in show
+#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 72, in show
 #     return func(node)
-#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 69, in no_show_func
+#   File "/Users/smruthipobbathi/Documents/Winter22/CSE210A/Assignments/HW4/interpreter.py", line 76, in no_show_func
 #     raise Exception(f'No show_{type(node).__name__} func defined')
 # Exception: No show_type func defined

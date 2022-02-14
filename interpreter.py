@@ -7,6 +7,12 @@ class LoopPos(Enum):
     LOOP_BEGIN = 1
     LOOP_MID = 2
     LOOP_END = 3
+
+class StmtType(Enum):
+    STMT_FREE = 0
+    STMT_IF = 1
+    STMT_WHILE = 2
+    STMT_SEQ = 3
 class DivideByZeroError(Error):
     def __init__(self):
         raise Exception('Divide by Zero')
@@ -21,6 +27,7 @@ class VarNotDefinedError(Error):
 class Interpreter():
     store = {}
     loop_pos = LoopPos.NO_LOOP
+    stmt_type = StmtType.STMT_FREE
     # repr_result = ""
     # Traverses through the AST produced from parser and calculates the result of the input expression
     def __init__(self, ast):
@@ -177,8 +184,10 @@ class Interpreter():
         self.store[name] = (value, VAL_INITIALIZED)
         if from_loop:
             return str(node.name.value + " := " + str(self.show(node.value)))
-        else:
+        elif self.stmt_type is StmtType.STMT_FREE:
             self.show_store()
+        elif self.stmt_type is StmtType.STMT_IF:
+            return str ("⇒ skip, "+ self.store_repr())
         # self.prt_assign(node)
 
     # def prt_assign(self, node):
@@ -223,20 +232,33 @@ class Interpreter():
         print("")
 
     def visit_If_node(self, node, from_loop = False):
+        if from_loop:
+            self.loop_pos = LoopPos.LOOP_MID
+            print("⇒ if " + self.show(node.condition) + " then { " + self.show(node.true_case) + " } else { " + self.show(node.false_case) + " }, "  + self.store_repr())
+            self.loop_pos = LoopPos.NO_LOOP
+
         if self.visit(node.condition):
             print(self.show(node.true_case))
+            # self.stmt_type = StmtType.STMT_IF
             self.visit(node.true_case)
+            ##self.stmt_type = StmtType.STMT_FREE
+            # , from_loop = True)
             # self.show_store()
             
         else:
             print(self.show(node.false_case))
+            ##self.stmt_type = StmtType.STMT_IF
             self.visit(node.false_case)
+            ##self.stmt_type = StmtType.STMT_FREE
+            # , from_loop = True)
             # self.show_store()
     def show_If_node(self, node):
         # , prt):
         # if prt:
             # self.repr_result + "⇒ if (" + self.show(node.condition, True) + ") then { " + self.show(node.true_case, True) + "} else { " + self.show(node.false_condition, True) +" } "  + self.store_repr())
-        print("⇒ if " + self.show(node.condition) + " then { " + self.show(node.true_case) + "} else { " + self.show(node.false_case) + " } "  + self.store_repr())
+        self.loop_pos = LoopPos.LOOP_MID
+        print("if " + self.show(node.condition) + " then { " + self.show(node.true_case) + " } else { " + self.show(node.false_case) + " }, "  + self.store_repr())
+        self.loop_pos = LoopPos.NO_LOOP
 
     def visit_While_node(self, node, from_loop = False):
         counter = 10000
@@ -285,11 +307,13 @@ class Interpreter():
     
     def execute_statements(self, node):
         if node.left_node != None:
-            print("⇒ skip; ")
-            self.visit(node.left_node)
+            print("⇒ skip; ", end="")
+            self.visit(node.left_node, from_loop = True)
             self.show(node.right_node)
         if node.right_node != None:
-            self.visit(node.right_node)
+            self.stmt_type = StmtType.STMT_SEQ
+            self.visit(node.right_node, from_loop = True)
+            self.stmt_type = StmtType.STMT_FREE
             self.show_store()
         return None
 
