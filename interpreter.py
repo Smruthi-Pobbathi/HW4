@@ -13,6 +13,7 @@ class StmtType(Enum):
     STMT_IF = 1
     STMT_WHILE = 2
     STMT_SEQ = 3
+    STMT_LEFT = 4
 class DivideByZeroError(Error):
     def __init__(self):
         raise Exception('Divide by Zero')
@@ -182,7 +183,9 @@ class Interpreter():
         name = node.name.value
         value = self.visit(node.value)
         self.store[name] = (value, VAL_INITIALIZED)
-        if from_loop:
+        if self.stmt_type is StmtType.STMT_LEFT:
+            return ""
+        elif from_loop:
             return str(node.name.value + " := " + str(self.show(node.value)))
         elif self.stmt_type is StmtType.STMT_FREE:
             self.show_store()
@@ -306,16 +309,24 @@ class Interpreter():
             return ("false")
     
     def execute_statements(self, node):
+        if node.type == TT_BINARY_OP_NODE and node.op.type == TT_SEMI:
+            if node.left_node.type == TT_BINARY_OP_NODE and node.left_node.op.type == TT_SEMI:
+                new_node = node.left_node
+                node.left_node = new_node.right_node
+                new_node.right_node = node
+                node = new_node
         if node.left_node != None:
             print("⇒ skip; ", end="")
+            self.stmt_type = StmtType.STMT_LEFT
             self.visit(node.left_node, from_loop = True)
+            self.stmt_type = StmtType.STMT_FREE
             self.show(node.right_node)
         if node.right_node != None:
             self.stmt_type = StmtType.STMT_SEQ
             self.visit(node.right_node, from_loop = True)
             self.stmt_type = StmtType.STMT_FREE
             self.show_store()
-        return None
+        return "test"
 
     def show_store(self):
         print("⇒ skip,",self.store_repr())

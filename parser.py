@@ -24,12 +24,14 @@ from error import Error
 class Num_node:
     # Creates a single node which holds Int values
     def __init__(self, token):
+        self.type = TT_NUM_NODE
         self.token = token
         self.value = token.value
     
 class Binary_op_node:
     # Creates a node which has left and right nodes also op node which holds operator
     def __init__(self, left_node, op, right_node):
+        self.type = TT_BINARY_OP_NODE
         self.left_node = left_node
         self.op = op
         self.right_node = right_node
@@ -37,17 +39,20 @@ class Binary_op_node:
 class Unary_op_node:
     # Creates a node which has a node also op node which holds operator
     def __init__(self, op, node):
+        self.type = TT_UNARY_OP_NODE
         self.op = op
         self.node = node
 
 class Assign_node:
     # Assign value to variable from only constant or from expression
     def __init__(self, name, value):
+        self.type = TT_ASSIGN_NODE
         self.name = name
         self.value = value
 
 class Variable_node:
     def __init__(self, token):
+        self.type = TT_VAR_NODE
         self.token = token
         self.value = token.value
 
@@ -60,6 +65,7 @@ class If_node:
     # then execute stmt_1
     # else execute stmt_2
     def __init__(self, condition, true_case, false_case):
+        self.type = TT_IF_NODE
         self.condition = condition
         self.true_case = true_case
         self.false_case = false_case
@@ -69,6 +75,7 @@ class While_node:
     # condition will be expression 
     # Body can be any other node or [statement]
     def __init__(self, condition, body):
+        self.type = TT_WHILE_NODE
         self.condition = condition
         self.body = body
 
@@ -81,6 +88,7 @@ class For_node:
 
 class Bool_node:
     def __init__(self, token):
+        self.type = TT_BOOL_NODE
         self.token = token
 
 class Invalid_syntax_error(Error):
@@ -190,14 +198,17 @@ class Parser:
         return node
     
     def stmt(self):
-        return self.binary_operation(self.expression, (TT_SEMI))
+        return self.binary_operation(self.expression, (TT_SEMI), right_fun = self.stmt)
 
-    def binary_operation(self, fun, operators):
+    def binary_operation(self, fun, operators, right_fun = None):
         left = fun()
         while self.current.type in operators:
             op = self.current
             self.next()
-            right = fun()
+            if right_fun is None:
+                right = fun()
+            else:
+                right = right_fun()
             left = Binary_op_node(left, op, right)
         return left
     
