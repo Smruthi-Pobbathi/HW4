@@ -143,6 +143,8 @@ class Interpreter():
     def visit_Assign_node(self, node, from_loop=False):
         name = node.name.value
         value = self.visit(node.value)
+        if self.stmt_type is StmtType.STMT_SEQ and from_loop:
+            print ("⇒ " + node.name.value + " := " + str(self.show(node.value)) + ", " + self.store_repr())
         self.store[name] = (value, VAL_INITIALIZED)
         if self.stmt_type is StmtType.STMT_LEFT:
             return ""
@@ -153,7 +155,6 @@ class Interpreter():
         elif self.stmt_type is StmtType.STMT_IF:
             return str ("⇒ skip, "+ self.store_repr())
 
-
     def show_Assign_node(self, node):
         name = node.name.value
         value = self.show(node.value)
@@ -161,9 +162,10 @@ class Interpreter():
             return str("⇒ " + name + " := " + str(value) + ";")
         elif self.loop_pos is LoopPos.LOOP_MID:
             return str(name + " := " + str(value))
+        elif self.loop_pos is LoopPos.NO_LOOP and self.stmt_type is StmtType.STMT_SEQ:
+            return str(name + " := " + str(value) + ", " + self.store_repr())
         elif self.loop_pos is LoopPos.NO_LOOP:
             return str("⇒ " + name + " := " + str(value) + ", " + self.store_repr())
-        
         
     def visit_Variable_node(self, node, from_loop = False):
         id = node.value
@@ -189,20 +191,16 @@ class Interpreter():
             self.loop_pos = LoopPos.NO_LOOP
 
         if self.visit(node.condition):
+            self.stmt_type = StmtType.STMT_IF
             print(self.show(node.true_case))
-            # self.stmt_type = StmtType.STMT_IF
+            self.stmt_type = StmtType.STMT_FREE
             self.visit(node.true_case)
-            ##self.stmt_type = StmtType.STMT_FREE
-            # , from_loop = True)
-            # self.show_store()
             
         else:
+            self.stmt_type = StmtType.STMT_IF
             print(self.show(node.false_case))
-            ##self.stmt_type = StmtType.STMT_IF
+            self.stmt_type = StmtType.STMT_FREE
             self.visit(node.false_case)
-            ##self.stmt_type = StmtType.STMT_FREE
-            # , from_loop = True)
-            # self.show_store()
 
     def show_If_node(self, node):
         self.loop_pos = LoopPos.LOOP_MID
@@ -235,7 +233,10 @@ class Interpreter():
         return None
 
     def show_While_node(self, node):
-        return str("⇒ while " + self.show(node.condition) + " do { "+ self.show(node.body) + " }, " + self.store_repr())
+        self.loop_pos = LoopPos.LOOP_MID
+        res = str("⇒ while " + self.show(node.condition) + " do { "+ self.show(node.body) + " }, " + self.store_repr())
+        self.loop_pos = LoopPos.NO_LOOP
+        return res
 
     def visit_Bool_node(self, node, from_loop = False):
         if node.token.matches(TT_KEYWORD, 'true'):
@@ -261,8 +262,9 @@ class Interpreter():
             self.stmt_type = StmtType.STMT_LEFT
             self.visit(node.left_node, from_loop = True)
             print("⇒ skip; ", end="")
-            self.stmt_type = StmtType.STMT_FREE
+            self.stmt_type = StmtType.STMT_SEQ
             res = self.show(node.right_node)
+            self.stmt_type = StmtType.STMT_FREE
             print(res)
         if node.right_node != None:
             self.stmt_type = StmtType.STMT_SEQ
