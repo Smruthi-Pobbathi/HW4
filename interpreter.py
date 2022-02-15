@@ -55,12 +55,12 @@ class Interpreter():
         result += "}"
         return result        
 
-    def visit(self, node, from_loop = False):
+    def visit(self, node):
         func_name = f'visit_{type(node).__name__}'
         func = getattr(self, func_name, self.no_visit_func)
-        return func(node, from_loop)
+        return func(node)
     
-    def no_visit_func(self, node, from_loop = False):
+    def no_visit_func(self, node):
         raise Exception(f'No visit_{type(node).__name__} func defined')
 
     def show(self, node):
@@ -68,10 +68,10 @@ class Interpreter():
         func = getattr(self, func_name, self.no_show_func)
         return func(node)
     
-    def no_show_func(self, node, from_loop = False):
+    def no_show_func(self, node):
         raise Exception(f'No show_{type(node).__name__} func defined')
     
-    def visit_Binary_op_node(self, node, from_loop = False):
+    def visit_Binary_op_node(self, node):
         if node.op.type == TT_PLUS:
             return self.visit(node.left_node) + self.visit(node.right_node)
         elif node.op.type == TT_MINUS:
@@ -118,7 +118,7 @@ class Interpreter():
         elif node.op.type == TT_SEMI:
             return self.execute_statements(node)
     
-    def visit_Unary_op_node(self, node, from_loop = False):
+    def visit_Unary_op_node(self, node):
         op = node.op.type
         if op == TT_PLUS:
             return +self.visit(node.node)
@@ -136,21 +136,21 @@ class Interpreter():
         elif op == TT_NOT:
             return ("¬" + self.show(node.node))
         
-    def visit_Num_node(self, node, from_loop = False):
+    def visit_Num_node(self, node):
         return node.value
     
     def show_Num_node(self, node):
         return str(node.value)
     
-    def visit_Assign_node(self, node, from_loop=False):
+    def visit_Assign_node(self, node):
         name = node.name.value
         value = self.visit(node.value)
-        if self.stmt_type is StmtType.STMT_SEQ and from_loop:
+        if self.stmt_type is StmtType.STMT_SEQ:
             print ("⇒ " + node.name.value + " := " + str(self.show(node.value)) + ", " + self.store_repr())
         self.store[name] = (value, VAL_INITIALIZED)
         if self.stmt_type is StmtType.STMT_LEFT:
             return ""
-        elif from_loop:
+        elif self.loop_pos is LoopPos.LOOP_MID:
             return str(node.name.value + " := " + str(self.show(node.value)))
         elif self.stmt_type is StmtType.STMT_FREE:
             self.store_prtd = True
@@ -170,7 +170,7 @@ class Interpreter():
         elif self.loop_pos is LoopPos.NO_LOOP:
             return str("⇒ " + name + " := " + str(value) + ", " + self.store_repr())
         
-    def visit_Variable_node(self, node, from_loop = False):
+    def visit_Variable_node(self, node):
         id = node.value
         value = self.store.get(id)
         if not value:
@@ -181,14 +181,14 @@ class Interpreter():
     def show_Variable_node(self, node):
         return str(node.value)
         
-    def visit_Skip_node(self, node, from_loop = False):
+    def visit_Skip_node(self, node):
         pass
 
     def show_Skip_node(self, node):
         print("")
 
-    def visit_If_node(self, node, from_loop = False):
-        if from_loop:
+    def visit_If_node(self, node):
+        if self.stmt_type is StmtType.STMT_SEQ:
             self.loop_pos = LoopPos.LOOP_MID
             print("⇒ if " + self.show(node.condition) + " then { " + self.show(node.true_case) + " } else { " + self.show(node.false_case) + " }, "  + self.store_repr())
             self.loop_pos = LoopPos.NO_LOOP
@@ -211,7 +211,7 @@ class Interpreter():
         self.loop_pos = LoopPos.NO_LOOP
         return ret
 
-    def visit_While_node(self, node, from_loop = False):
+    def visit_While_node(self, node):
         counter = 10000
         while self.visit(node.condition):
             self.loop_pos = LoopPos.LOOP_BEGIN
@@ -221,7 +221,7 @@ class Interpreter():
             counter -= 1
             if counter == 0:
                 break
-            self.visit(node.body, from_loop = True)
+            self.visit(node.body)
             print("⇒ skip; " + "while " + self.show(node.condition) + " do { "+ self.show(node.body) + " }, " + self.store_repr())
             counter -= 1
             if counter == 0:
@@ -241,7 +241,7 @@ class Interpreter():
         self.loop_pos = LoopPos.NO_LOOP
         return res
 
-    def visit_Bool_node(self, node, from_loop = False):
+    def visit_Bool_node(self, node):
         if node.token.matches(TT_KEYWORD, 'true'):
             return True
         elif node.token.matches(TT_KEYWORD, 'false'):
@@ -263,7 +263,7 @@ class Interpreter():
         if node.left_node != None:
             # print("⇒ skip; ", end="")
             self.stmt_type = StmtType.STMT_LEFT
-            self.visit(node.left_node, from_loop = True)
+            self.visit(node.left_node)
             print("⇒ skip; ", end="")
             self.stmt_type = StmtType.STMT_SEQ
             res = self.show(node.right_node)
@@ -271,7 +271,7 @@ class Interpreter():
             print(res)
         if node.right_node != None:
             self.stmt_type = StmtType.STMT_SEQ
-            self.visit(node.right_node, from_loop = True)
+            self.visit(node.right_node)
             self.stmt_type = StmtType.STMT_FREE
             if not self.store_prtd:
                 self.show_store()
